@@ -4,6 +4,7 @@ import com.mongodb.Mongo;
 import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.icysoft.blog.example.springdatamongodb.domains.User;
@@ -33,6 +34,12 @@ public class App {
         return new MongoTemplate(mongo, "spring-data-mongo-example");
     }
 
+    private static void displayUsers(List<User> userList, String prompt) {
+        for (User usr : userList) {
+            Logger.getLogger(App.class.getName()).log(Level.INFO, "Fetch users - {0} : {1}, {2}", new Object[]{prompt, usr.getLastName(), usr.getSurName()});
+        }
+    }
+
     public static void main(String[] args) {
         // Get Spring context
         AbstractApplicationContext context = new AnnotationConfigApplicationContext(App.class);
@@ -56,9 +63,7 @@ public class App {
             repository.save(userC);
 
             // Fetch all users
-            for (User usr : repository.findAll()) {
-                Logger.getLogger(App.class.getName()).log(Level.INFO, "Fetch all users : {0}, {1}", new Object[]{usr.getLastName(), usr.getSurName()});
-            }
+            App.displayUsers(repository.findAll(), "After insert");
 
             // Update user
             userA.setLastName("UpdatedUser");
@@ -66,9 +71,13 @@ public class App {
             repository.save(userA);
 
             // Fetch all users
-            for (User usr : repository.findAll()) {
-                Logger.getLogger(App.class.getName()).log(Level.INFO, "Fetch all updated users : {0}, {1}", new Object[]{usr.getLastName(), usr.getSurName()});
-            }
+            App.displayUsers(repository.findAll(), "After update");
+
+            // Delete a user
+            repository.delete(userC);
+
+            // Fetch all users
+            App.displayUsers(repository.findAll(), "After delete");
         } catch (ParseException ex) {
             Logger.getLogger(App.class.getName()).log(Level.SEVERE, "Cannot parse date", ex);
         }
