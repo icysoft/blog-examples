@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.icysoft.blog.example.springdatamongodb.domains;
 
 import java.util.Date;
@@ -10,7 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
- *
+ * User Document
  * @author cmillauriaux
  */
 @Document(collection = "user")
@@ -27,9 +23,18 @@ public class User {
     
     private Date subscribeDate;
 
+    /**
+     * Default constructor
+     */
     public User() {
     }
 
+    /**
+     * Constructor to initialize ID and subscribe date automatically
+     * @param lastName User Last Name
+     * @param surName User Sur Name
+     * @param birthday User Birthday
+     */
     public User(String lastName, String surName, Date birthday) {
         this.lastName = lastName;
         this.surName = surName;

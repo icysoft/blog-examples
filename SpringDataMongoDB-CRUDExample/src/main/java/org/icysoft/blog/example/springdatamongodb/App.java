@@ -17,7 +17,8 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 /**
- * Hello world!
+ * Example showing how to connect to MongoDB instance and
+ * insert, delete and update documents
  *
  */
 @Configuration
@@ -34,12 +35,26 @@ public class App {
         return new MongoTemplate(mongo, "spring-data-mongo-example");
     }
 
+    /**
+     * Method wich fetch a user list and log their lastname and surname
+     * @param userList user list to display
+     * @param prompt string to display beforme user information
+     */
     private static void displayUsers(List<User> userList, String prompt) {
         for (User usr : userList) {
             Logger.getLogger(App.class.getName()).log(Level.INFO, "Fetch users - {0} : {1}, {2}", new Object[]{prompt, usr.getLastName(), usr.getSurName()});
         }
     }
 
+    /**
+     * Main method wich shows how to do this tasks :
+     * - Delete all documents from the repository
+     * - Make new users and store it
+     * - Find all users from DB
+     * - Update an user
+     * - Delete an user
+     * @param args 
+     */
     public static void main(String[] args) {
         // Get Spring context
         AbstractApplicationContext context = new AnnotationConfigApplicationContext(App.class);
